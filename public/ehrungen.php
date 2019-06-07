@@ -26,6 +26,7 @@ use Contao\Controller;
  * Initialize the system
  */
 define('TL_MODE', 'FE');
+define('TL_SCRIPT', 'system/modules/tributes/public/ehrungen.php'); 
 // ER2 / ER3 (dev over symlink)
 if(file_exists('../../../initialize.php')) require('../../../initialize.php');
 else require('../../../../../system/initialize.php');
@@ -162,8 +163,7 @@ class Ehrungsliste
 			(
 				'Ullrich Krause <praesident@schachbund.de>',
 				'Uwe Bönsch <sportdirektor@schachbund.de>',
-				'DSB-Presse <presse@schachbund.de>',
-				'Ralf Chadt-Rausch <r-chadt@t-online.de>'
+				'DSB-Presse <presse@schachbund.de>'
 			)); 
 			$objEmail->sendTo(array('Frank Hoppe <webmaster@schachbund.de>')); 
 		}

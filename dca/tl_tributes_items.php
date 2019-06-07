@@ -149,7 +149,15 @@ $GLOBALS['TL_DCA']['tl_tributes_items'] = array
 			'exclude'                 => true,
 			'search'                  => true,
 			'inputType'               => 'text',
-			'eval'                    => array('rgxp'=>'url', 'decodeEntities'=>true, 'maxlength'=>255, 'fieldType'=>'radio', 'tl_class'=>'clr w50 wizard'),
+			'eval'                    => array
+			(
+				'rgxp'                => 'url',
+				'decodeEntities'      => true,
+				'maxlength'           => 255,
+				'fieldType'           => 'radio',
+				//'dcaPicker'           => true,
+				'tl_class'            => 'clr w50 wizard'
+			),
 			'wizard' => array
 			(
 				array('tl_tributes_items', 'pagePicker')
@@ -195,7 +203,7 @@ $GLOBALS['TL_DCA']['tl_tributes_items'] = array
 		(
 			'label'                   => &$GLOBALS['TL_LANG']['tl_tributes_items']['spielerregister_id'],
 			'exclude'                 => true,
-			'options_callback'        => array('tl_tributes_items', 'getRegisterliste'),
+			'options_callback'        => array('\Samson\Playerbase\Helper', 'getRegister'),
 			'inputType'               => 'select',
 			'eval'                    => array
 			(
@@ -269,26 +277,16 @@ class tl_tributes_items extends Backend
 
 	public function listPersons($arrRow)
 	{
+		print_r($arrRow);
 		$temp = '<div class="tl_content_left"><b>'.$arrRow['year'].'</b>';
 		if($arrRow['name']) $temp .= ': '.$arrRow['name'];
+		if($arrRow['spielerregister_id']) $temp .= ' <img src="system/modules/tributes/assets/images/ja.png" width="10" title="mit Spielerregister verknüpft">';
+		else $temp .= ' <img src="system/modules/tributes/assets/images/nein.png" width="10" title="mit Spielerregister nicht verknüpft">';
 		return $temp.'</div>';
 	}
 
-	public function getRegisterliste(DataContainer $dc)
-	{
-		$array = array();
-		$objRegister = $this->Database->prepare("SELECT * FROM tl_spielerregister ORDER BY surname1,firstname1 ASC ")->execute();
-		$array[0] = '-';
-		while($objRegister->next())
-		{
-			$array[$objRegister->id] = $objRegister->surname1 . ',' . $objRegister->firstname1.' ('.$objRegister->birthday.')';
-		}
-		return $array;
-
-	}
-
 	/**
-	 * �ndert das Aussehen des Toggle-Buttons.
+	 * Ändert das Aussehen des Toggle-Buttons.
 	 * @param $row
 	 * @param $href
 	 * @param $label
